@@ -5,4 +5,5 @@
 wtd_srv_mariadb_package:
   - mariadb-server
   - python-mysql
+  - python3-mysql
 wtd_srv_mariadb_conf_server_path: "/etc/my.cnf.d/mariadb-server.cnf"
