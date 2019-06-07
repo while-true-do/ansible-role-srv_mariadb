@@ -1,0 +1,8 @@
+---
+# vars file for while_true_do.srv_mariadb
+
+## Package Management
+wtd_srv_mariadb_package:
+  - mariadb-server
+  - MySQL-python
+wtd_srv_mariadb_conf_server_path: "/etc/my.cnf.d/server.cnf"

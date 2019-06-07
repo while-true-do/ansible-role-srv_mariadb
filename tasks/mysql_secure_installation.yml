@@ -1,0 +1,52 @@
+---
+# tasks file for while_true_do.srv_mariadb
+
+- name: Manage mariadb "root" User
+  mysql_user:
+    login_user: "root"
+    login_password: "{{ wtd_srv_mariadb_conf_root_pass | mandatory }}"
+    check_implicit_admin: true
+    user: "root"
+    password: "{{ wtd_srv_mariadb_conf_root_pass }}"
+    priv: "*.*:ALL,GRANT"
+    host: "{{ item }}"
+  loop:
+    - "::1"
+    - "127.0.0.1"
+    - "localhost"
+  when:
+    - wtd_srv_mariadb_package_state != "absent"
+  tags:
+    - mariadb
+    - configuration
+    - security
+    - initialization
+
+- name: Manage mariadb "anonymous" User
+  mysql_user:
+    login_user: root
+    login_password: "{{ wtd_srv_mariadb_conf_root_pass | mandatory }}"
+    name: ""
+    state: "absent"
+    host_all: true
+  when:
+    - wtd_srv_mariadb_package_state != "absent"
+  tags:
+    - mariadb
+    - configuration
+    - security
+    - initialization
+
+- name: Manage mariadb "test" Database
+  mysql_db:
+    login_user: "root"
+    login_password: "{{ wtd_srv_mariadb_conf_root_pass | mandatory }}"
+    name: "test"
+    state: "absent"
+  when:
+    - wtd_srv_mariadb_package_state != "absent"
+  tags:
+    - mariadb
+    - configuration
+    - security
+    - initialization

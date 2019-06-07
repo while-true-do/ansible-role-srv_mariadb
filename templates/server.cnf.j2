@@ -1,0 +1,23 @@
+{{ ansible_managed | comment }}
+
+# Options read by mysqld, which includes both MariaDB Server and MySQL Server.
+[mysqld]
+
+# Options read by MariaDB Server.
+[mariadb]
+character-set-server={{ wtd_srv_mariadb_conf_server.character_set|default('utf8mb4') }}
+
+datadir={{ wtd_srv_mariadb_conf_server.data_dir|default('/var/lib/mysql') }}
+symbolic-links={{ wtd_srv_mariadb_conf_server.symbolic_links|default('0') }}
+
+port={{ wtd_srv_mariadb_conf_server.port|default('0') }}
+bind-address={{ wtd_srv_mariadb_conf_server.bind_address|default('127.0.0.1') }}
+socket={{ wtd_srv_mariadb_conf_server.socket|default('/var/lib/mysql/mysql.sock') }}
+
+innodb_file_per_table={{ wtd_srv_mariadb_conf_innodb.file_per_table|default('true') }}
+innodb_buffer_pool_size={{ wtd_srv_mariadb_conf_innodb.buffer_pool_size|default('128M') }}
+
+query_cache_type={{ wtd_srv_mariadb_conf_query_cache.type|default('1') }}
+query_cache_limit={{ wtd_srv_mariadb_conf_query_cache.limit|default('256K') }}
+query_cache_min_res_unit={{ wtd_srv_mariadb_conf_query_cache.min_res_unit|default('2k') }}
+query_cache_size={{ wtd_srv_mariadb_conf_query_cache.cache_size|default('64M') }}

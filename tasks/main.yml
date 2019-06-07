@@ -1,0 +1,69 @@
+---
+# tasks file for while_true_do.srv_mariadb
+
+- name: Gather package facts
+  package_facts:
+    manager: auto
+  when:
+    - wtd_srv_mariadb_fw_mgmt
+  tags:
+    - mariadb
+    - facts
+    - package
+
+- name: Include distribution Variables
+  include_vars: "{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.yml"
+  tags:
+    - mariadb
+    - package
+
+- name: Manage mariadb Packages
+  package:
+    name: "{{ wtd_srv_mariadb_package }}"
+    state: "{{ wtd_srv_mariadb_package_state }}"
+  become: true
+  tags:
+    - mariadb
+    - package
+
+- name: Include mariadb configuration Tasks
+  include_tasks: "configuration.yml"
+  when:
+    - wtd_srv_mariadb_package_state != "absent"
+  tags:
+    - mariadb
+    - configuration
+
+- name: Manage mariadb Service
+  service:
+    name: "{{ wtd_srv_mariadb_service }}"
+    state: "{{ wtd_srv_mariadb_service_state }}"
+    enabled: "{{ wtd_srv_mariadb_service_enabled }}"
+  become: true
+  when:
+    - wtd_srv_mariadb_package_state != "absent"
+  tags:
+    - mariadb
+    - service
+
+- name: Include "mysql_secure_installation" Tasks
+  include_tasks: "mysql_secure_installation.yml"
+  tags:
+    - mariadb
+    - configuration
+    - security
+    - initialization
+
+- name: Manage mariadb FW Service
+  firewalld:
+    service: "{{ wtd_srv_mariadb_fw_service }}"
+    state: "{{ wtd_srv_mariadb_fw_state }}"
+    zone: "{{ wtd_srv_mariadb_fw_zone }}"
+  become: true
+  when:
+    - wtd_srv_mariadb_fw_mgmt
+    - '"firewalld" in packages'
+  tags:
+    - mariadb
+    - security
+    - firewall

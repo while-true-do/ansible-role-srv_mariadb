@@ -1,0 +1,58 @@
+---
+# tasks file for while_true_do.srv_mariadb
+
+- name: Manage mariadb Data Directory
+  file:
+    path: "{{ wtd_srv_mariadb_conf_server.data_dir }}"
+    owner: "mysql"
+    group: "mysql"
+    state: "directory"
+    mode: "0755"
+  become: true
+  notify:
+    - Restart mariadb
+  tags:
+    - mariadb
+    - configuration
+
+- name: Manage mariadb my Configuration
+  template:
+    src: "my.cnf.j2"
+    dest: "{{ wtd_srv_mariadb_conf_my_path }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  become: true
+  notify:
+    - Restart mariadb
+  tags:
+    - mariadb
+    - configuration
+
+- name: Manage mariadb Configuration Directory
+  file:
+    path: "/etc/my.cnf.d"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  become: true
+  notify:
+    - Restart mariadb
+  tags:
+    - mariadb
+    - configuration
+
+- name: Manage mariadb server Configuration
+  template:
+    src: "server.cnf.j2"
+    dest: "{{ wtd_srv_mariadb_conf_server_path }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  become: true
+  notify:
+    - Restart mariadb
+  tags:
+    - mariadb
+    - configuration

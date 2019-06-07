@@ -1,0 +1,12 @@
+---
+# handlers file for while_true_do.srv_mariadb
+
+- name: Restart mariadb
+  service:
+    name: "{{ wtd_srv_mariadb_service }}"
+    state: "restarted"
+  become: true
+  tags:
+    - mariadb
+    - configuration
+    - service

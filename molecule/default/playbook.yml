@@ -1,0 +1,6 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: while_true_do.srv_mariadb
+      wtd_srv_mariadb_conf_root_pass: "foobar"

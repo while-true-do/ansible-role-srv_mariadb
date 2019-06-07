@@ -1,0 +1,7 @@
+{{ ansible_managed | comment }}
+
+#  Options read by all MariaDB and MySQL client programs.
+[client]
+character-set-client={{ wtd_srv_mariadb_conf_server.character_set|default('utf8mb4') }}
+
+port={{ wtd_srv_mariadb_conf_server.port|default('3306') }}
